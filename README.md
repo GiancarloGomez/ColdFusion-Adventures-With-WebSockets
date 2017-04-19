@@ -1,4 +1,4 @@
-# ColdFusion Adventures With WebSockets
+# Adventures with WebSockets
 Adventures with WebSockets Presentation Code
 
 ## Conferences
