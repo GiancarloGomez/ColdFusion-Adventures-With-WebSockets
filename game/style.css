@@ -1,0 +1,144 @@
+body,button,input[type="text"] {
+	font:normal 14px/1.4 Lato,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+body {
+	padding: 0;
+	margin:0;
+}
+button {
+	width: 100%;
+	line-height:30px;
+	border:1px solid #ddd;
+	background-color: #eee;
+}
+
+form {
+	background-color: #fff;
+	padding: 1em;
+	margin:20px;
+	box-shadow: 0 0 8px rgba(0,0,0,.5);
+}
+input[type="text"]{
+	display: block;
+	width: 100%;
+	margin-bottom: 10px;
+	padding: .5em;
+	text-align: center;
+	box-sizing: border-box;
+	border:1px solid #ddd;
+	border-radius: 0;
+	box-shadow: inset 1px 1px 2px #aaa;
+}
+
+#board,
+#game {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+#board{
+	padding: 20px;
+}
+#game{
+	flex-basis: 60%;
+	height:calc( 100vh - 40px );
+}
+	#game .key {
+		flex:0 0 calc( 50% - 2px );
+		margin-bottom: 4px;
+		box-sizing: border-box;
+		outline: none;
+		cursor: pointer;
+		transition: all .1s;
+	}
+	#game .key:nth-child(n+3){
+		margin-bottom: 0;
+	}
+	#game .key.on {
+		transform: scale(1.05);
+	}
+	#game .key[disabled] {
+		opacity: .1;
+	}
+	.green { background-color: #2E9B37; }
+	.green.on { background-color: #4AF706; }
+	.red { background-color: #8E000F; }
+	.red.on { background-color: #D8000E; }
+	.yellow { background-color: #EAA908; }
+	.yellow.on { background-color: #FFFF0B; }
+	.blue { background-color: #0C357D; }
+	.blue.on { background-color: #2FAFEE; }
+	.hide { display: none; }
+
+sidebar{
+	flex-basis: calc( 40% - 10px );
+	border:1px solid #ddd;
+	background-color: #f5f5f5;
+}
+	#players ul{
+		list-style: none;
+		margin:0;
+		padding:0;
+	}
+	#players ul li {
+		padding: 10px;
+		border:1px solid #ddd;
+		margin: 2px;
+		position: relative;
+	}
+	#players ul li.active {
+		background-color: #fff732;
+	}
+	#players ul li.winner {
+		background-color: #4caf50;
+		color:#fff;
+	}
+	#players ul li.looser {
+		background-color: #f44336;
+		color:#fff;
+	}
+	#players ul li .score{
+		position: absolute;
+		right:0;
+		bottom:0;
+		margin:0;
+		padding:.5em 1em;
+		line-height: 1;
+		background-color: rgba(0,0,0,.25);
+		color: #fff;
+		font-weight: bold;
+		border-radius: .5em 0 0 0;
+	}
+	#players ul div {
+		margin:5px;
+	}
+
+#controls {
+	padding: 1em;
+}
+
+#overlay {
+	background-color: transparent;
+	bottom:0;
+	display: none;
+	left:0;
+	position: fixed;
+	right:0;
+	top:0;
+	z-index: 1;
+}
+	.off #board{
+		filter: blur(6px);
+	}
+	.off #overlay {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.off #overlay form {
+		flex-basis: 80%;
+	}
+	.no-turn #overlay {
+		display: block;
+	}
+
