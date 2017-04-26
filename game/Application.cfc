@@ -17,7 +17,7 @@ component output="false"{
     public boolean function onRequestStart(targetPage){
         if (structKeyExists(url,"reload")){
             // tell everyone to reconnect
-            WsPublish("chat","FORCE-RECONNECT");
+            WsPublish("game","FORCE-RECONNECT");
             applicationStop();
             location('./',false);
         }

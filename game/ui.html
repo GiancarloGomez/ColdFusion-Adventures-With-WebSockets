@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Simon</title>
+	<style>
+		:root{
+			--distance:-4px;
+		}
+		#game {
+			border:none;
+			width:300px;
+			position: relative;
+			overflow: visible;
+			border-radius: 100%;
+			margin:20px 0 0 20px;
+		}
+
+		#game::before{
+			content: '';
+			display: block;
+			padding-top: 100%;
+			z-index: 1;
+			position: relative;
+		}
+		#game::after {
+			content: '';
+			display: block;
+			position: absolute;
+			background-color: #fff;
+			width: 50%;
+			height:50%;
+			left:25%;
+			top:25%;
+			border-radius: 100%;
+			z-index:20;
+		}
+		#game button{
+			z-index:3;
+			position: absolute;
+			top:0;
+			width:50%;
+			height:50%;
+			border:none;
+			background-color: #eee;
+			transition: all .2s;
+			outline: none;
+			/*box-shadow: inset 2px 0 1px rgba(0,0,0,.4);*/
+		}
+		#game button:hover { background-color: #ccc; }
+		#game button:active {
+			box-shadow: none;
+			transform: scale(1.02);
+			z-index: 10;
+		}
+		#game button.red,
+		#game button.blue 		{ left:50%; }
+		#game button.blue,
+		#game button.yellow 	{ top:50%; }
+		#game button.green 		{ border-radius: 100% 0 0 0; margin: var(--distance) 0 0 var(--distance); }
+		#game button.red 		{ border-radius: 0 100% 0 0; margin: var(--distance) var(--distance) 0 0; }
+		#game button.yellow 	{ border-radius: 0 0 0 100%; margin:  0 0 var(--distance) var(--distance); }
+		#game button.blue 		{ border-radius: 0 0 100% 0; margin: 0 var(--distance) var(--distance) 0; }
+		#game button.green {
+			background-color: #2E9B37;
+			border: 2px solid #4AF706;
+			border-width:4px 0 0 4px;
+		}
+		#game button.green.on,#game button.green:active { background-color: #4AF706; }
+		#game button.red {
+			background-color: #8E000F;
+			border: 2px solid #D8000E;
+			border-width:4px 4px 0 0;
+		}
+		#game button.red.on,#game button.red:active { background-color: #D8000E; }
+		#game button.yellow {
+			background-color: #EAA908;
+			border: 2px solid #FFFF0B;
+			border-width:0 0 4px 4px;
+		}
+		#game button.yellow.on,#game button.yellow:active { background-color: #FFFF0B; }
+		#game button.blue {
+			background-color: #0C357D;
+			border: 2px solid #2FAFEE;
+			border-width:0 4px 4px 0;
+		}
+		#game button.blue.on,#game button.blue:active { background-color: #2FAFEE; }
+	</style>
+</head>
+<body>
+
+	<div id="game">
+		<button type="button" class="key green" data-index="0" ></button>
+		<button type="button" class="key red" data-index="1" ></button>
+		<button type="button" class="key yellow" data-index="2" ></button>
+		<button type="button" class="key blue" data-index="3" ></button>
+	</div>
+
+	<script>
+		Array.from(document.getElementsByTagName('button'))
+			.forEach(element => element.addEventListener('click', buttonClicked));
+
+		function buttonClicked(){
+			this.classList.add('active');
+		}
+	</script>
+
+</body>
+</html>

@@ -3,16 +3,20 @@ var Game = {
     colors          : [ "green","red","yellow","blue"],
     body            : document.body,
     plyrs           : document.getElementById('players'),
+    turnLabel       : document.getElementById('turn'),
+    gameInfoBar     : document.getElementById('game-info'),
     restartBtn      : document.getElementById('restart'),
     subscribeBtn    : document.getElementById('subscribe'),
     audio           : document.getElementsByTagName('audio'),
     frm             : document.getElementById('subscribeForm'),
     keys            : document.querySelectorAll('.key'),
     waiting         : document.getElementById('waiting'),
+    channelLabels   : document.querySelectorAll('.channel_label'),
     game            : [],
     players         : [],
     curPick         : [],
     me              : '',
+    channel         : '',
     activePlayer    : null,
 
     init : function(){
@@ -25,73 +29,27 @@ var Game = {
 
         // subscribe form
         _this.frm.addEventListener('submit',function(evt){
-            var username = _this.frm.username.value.trim();
+            const   username = _this.frm.username.value.trim(),
+                    channel  = _this.frm.channel.value.trim();
             // submit if good
-            if (username !== ''){
+            if (username !== '' && channel !== ''){
+                _this.channel = `game.${channel}`;
+                _this.channelLabels.forEach(element => element.innerHTML = channel );
                 _this.subscribe(username);
-                _this.frm.classList.add('hide');
-                _this.waiting.classList.remove('hide');
+                _this.subscribeBtn.disabled = true;
+                _this.subscribeBtn.innerHTML = 'PROCESSING';
             }
             evt.preventDefault();
         });
 
         _this.restartBtn.addEventListener('click',function(){
-            ws.publish('game.path_1',{type:'restart-game',position:Math.floor(Math.random() * 4)});
+            ws.publish(_this.channel,{type:'restart-game',position:Math.floor(Math.random() * 4)});
             _this.restartBtn.classList.add('hide');
         });
     },
 
     disableGameKeys : function (state){
         this.keys.forEach(element => element.disabled = state );
-    },
-
-    positionClicked : function(position){
-        let _this = this;
-
-        if (_this.me === _this.players[_this.activePlayer].clientid){
-            // add current pick for active player
-            if (_this.game.length > 0)
-                _this.curPick.push(_this.colors[position]);
-
-            // check if current player matches the selected pick
-            if (_this.game.length > 0 && _this.curPick.length <= _this.game.length){
-                if (_this.game[_this.curPick.length-1] !== _this.curPick[_this.curPick.length-1]){
-                    ws.publish('game.path_1',{type:'stop-game'});
-                    _this.gameEnd();
-                    return;
-                }
-            }
-            // add initial or new pick
-            else if (_this.game.length === 0 || _this.curPick.length > _this.game.length){
-
-                // change players
-                if (_this.game.length < _this.curPick.length){
-                    // show active player
-                    ws.publish('game.path_1',{type:'change-player'});
-                    _this.playerSetActive();
-                }
-
-                // add to game array
-                _this.game.push(_this.colors[position]);
-            }
-            // push the position
-            _this.positionPlayed(position);
-            // push the game
-            ws.publish('game.path_1',{type:'track-game',data:_this.game,position:position});
-        }
-    },
-
-    positionPlayed : function(position){
-        let _this = this;
-        // add animation
-        _this.keys[position].classList.add('on');
-        // stop animation
-        window.setTimeout(function(pos){
-            _this.keys[pos].classList.remove('on');
-        },100,position);
-        // play audio
-        _this.audio[position].currentTime = 0;
-        _this.audio[position].play();
     },
 
     gameEnd : function(){
@@ -113,12 +71,16 @@ var Game = {
         });
 
         if (winner.clientid === _this.me){
+            _this.gameInfoBar.classList.add('winner');
+            _this.turnLabel.innerHTML = 'YOU WON!!!';
             _this.restartBtn.classList.remove('hide');
             _this.body.classList.remove('no-turn');
             _this.audio[_this.audio.length-1].volume = .8;
             _this.audio[_this.audio.length-1].currentTime = 0;
             _this.audio[_this.audio.length-1].play();
         } else {
+            _this.gameInfoBar.classList.add('looser');
+            _this.turnLabel.innerHTML = 'YOU LOST :-(';
             _this.body.classList.add('no-turn');
             _this.audio[_this.audio.length-2].volume = .5;
             _this.audio[_this.audio.length-2].currentTime = 0;
@@ -129,17 +91,15 @@ var Game = {
         _this.disableGameKeys(true);
     },
 
-    gameRestart : function(pos){
+    gameRestart : function(position){
         let _this   = this;
         // reset game
         _this.game = [];
         _this.plyrs.querySelectorAll('li').forEach(li => li.classList.remove('looser','winner'));
         _this.playerSetActive();
         _this.disableGameKeys(false);
-        // settimeout so click happens after a few
-        window.setTimeout(function(pos){
-            _this.keys[pos].click()
-        },500,pos);
+        _this.gameInfoBar.classList.remove('looser','winner');
+        _this.notifyTurn(true,position);
     },
 
     gameStart : function(data){
@@ -152,10 +112,6 @@ var Game = {
         _this.players.forEach(player => {player.score = 0} );
         // reset game
         _this.game = [];
-        // settimeout so first click happens after enable
-        window.setTimeout(function(pos){
-            _this.keys[pos].click()
-        },500,data.first);
         // remove off state
         _this.body.classList.remove('off');
         _this.waiting.classList.add('hide');
@@ -163,6 +119,33 @@ var Game = {
         _this.playerRender();
         // set active player
         _this.playerSetActive();
+        // notifiy player their turn
+        _this.notifyTurn(true,data.first);
+    },
+
+    notifyTurn : function(firstHit = false, position){
+        let _this       = this,
+            isMe        = _this.players[_this.activePlayer].clientid === _this.me,
+            username    = _this.players[_this.activePlayer].subscriberinfo.username;
+        if ( isMe === true ){
+            _this.turnLabel.innerHTML = `It is your turn ${username}!`;
+            _this.gameInfoBar.classList.add('my-turn');
+        } else {
+            _this.turnLabel.innerHTML = `It is ${username}'s turn`;
+            _this.gameInfoBar.classList.remove('my-turn');
+        }
+        if (firstHit === true){
+            // settimeout so first click happens after enable
+            window.setTimeout(function(pos){
+                _this.keys[pos].click()
+            },1000,position);
+        }
+        else {
+            // stop animation
+            window.setTimeout(function(pos){
+                _this.keys[pos].classList.remove('on');
+            },100,position);
+        }
     },
 
     playerSetActive : function(){
@@ -203,6 +186,53 @@ var Game = {
         _this.plyrs.innerHTML = `<ul>${str}</ul>`;
     },
 
+    positionClicked : function(position){
+        let _this = this;
+
+        if (_this.me === _this.players[_this.activePlayer].clientid){
+            // add current pick for active player
+            if (_this.game.length > 0)
+                _this.curPick.push(_this.colors[position]);
+
+            // check if current player matches the selected pick
+            if (_this.game.length > 0 && _this.curPick.length <= _this.game.length){
+                if (_this.game[_this.curPick.length-1] !== _this.curPick[_this.curPick.length-1]){
+                    ws.publish(_this.channel,{type:'stop-game'});
+                    _this.gameEnd();
+                    return;
+                }
+            }
+            // add initial or new pick
+            else if (_this.game.length === 0 || _this.curPick.length > _this.game.length){
+
+                // change players
+                if (_this.game.length < _this.curPick.length){
+                    // show active player
+                    ws.publish(_this.channel,{type:'change-player'});
+                    _this.playerSetActive();
+                }
+
+                // add to game array
+                _this.game.push(_this.colors[position]);
+            }
+            // push the position
+            _this.positionPlayed(position);
+            // push the game
+            ws.publish(_this.channel,{type:'track-game',data:_this.game,position:position});
+        }
+    },
+
+    positionPlayed : function(position){
+        let _this = this;
+        // add animation
+        _this.keys[position].classList.add('on');
+        // notify turn
+        _this.notifyTurn(false,position);
+        // play audio
+        _this.audio[position].currentTime = 0;
+        _this.audio[position].play();
+    },
+
     receiveData : function(message){
         let _this       = Game,
             _response   = message.data || {},
@@ -211,10 +241,14 @@ var Game = {
         // I subscribed
         if(message.reqType === 'subscribe' && message.msg === 'ok'){
             _this.me = message.clientid;
+            _this.frm.classList.add('hide');
+            _this.waiting.classList.remove('hide');
         }
         // Room is full
         else if(message.msg && message.msg.indexOf('Access denied') !== -1){
-            console.error('The room is full at the moment, please try again later');
+            _this.subscribeBtn.disabled     = false;
+            _this.subscribeBtn.innerHTML    = 'SUBMIT';
+            window.alert(`The channel ${_this.frm.channel.value.trim()} full at the moment, please try again later or create another channel.`);
         }
         // handle all possible messages
         else if (message.data) {
@@ -242,6 +276,8 @@ var Game = {
                         _this.gameEnd();
                 break;
                 case 'player-left':
+                    ws.unsubscribe(_this.channel);
+                    window.alert('The other player left the game, your session will end now.');
                     location.reload();
                 break;
             }
@@ -249,7 +285,8 @@ var Game = {
     },
 
     subscribe : function(username){
-        ws.subscribe('game.path_1',{username:username});
+        let _this = this;
+        ws.subscribe(_this.channel,{username:username});
     }
 };
 

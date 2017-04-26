@@ -1,9 +1,13 @@
+:root{
+	--distance:-4px;
+}
 body,button,input[type="text"] {
 	font:normal 14px/1.4 Lato,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 body {
 	padding: 0;
 	margin:0;
+	background-color:#f5f5f5;
 }
 button {
 	width: 100%;
@@ -12,69 +16,161 @@ button {
 	background-color: #eee;
 }
 
-form {
-	background-color: #fff;
-	padding: 1em;
-	margin:20px;
-	box-shadow: 0 0 8px rgba(0,0,0,.5);
-}
-input[type="text"]{
-	display: block;
-	width: 100%;
-	margin-bottom: 10px;
-	padding: .5em;
-	text-align: center;
-	box-sizing: border-box;
-	border:1px solid #ddd;
-	border-radius: 0;
-	box-shadow: inset 1px 1px 2px #aaa;
-}
-
-#board,
-#game {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
-}
-#board{
-	padding: 20px;
-}
-#game{
-	flex-basis: 60%;
-	height:calc( 100vh - 40px );
-}
-	#game .key {
-		flex:0 0 calc( 50% - 2px );
-		margin-bottom: 4px;
-		box-sizing: border-box;
-		outline: none;
-		cursor: pointer;
-		transition: all .1s;
+/* ==========================================================================
+FORM
+========================================================================== */
+	form {
+		background-color: #fff;
+		padding: 1em;
+		margin:20px;
+		box-shadow: 0 0 8px rgba(0,0,0,.5);
 	}
-	#game .key:nth-child(n+3){
-		margin-bottom: 0;
+	input[type="text"]{
+		display: block;
+		width: 100%;
+		margin-bottom: 10px;
+		padding: .5em;
+		text-align: center;
+		box-sizing: border-box;
+		border:1px solid #ddd;
+		border-radius: 0;
+		box-shadow: inset 1px 1px 2px #aaa;
+	}
+	input::placeholder{
+		color: #999;
+	}
+	label {
+		display: block;
+		margin-bottom: 5px;
+	}
+	#waiting {
+		text-align: center;
+	}
+	.help {
+		text-align: center;
+		font-size: .9em;
+		display: block;
+		margin:-5px 0 10px;
+		color: #999;
+	}
+
+/* ==========================================================================
+GAME
+========================================================================== */
+	#game-info {
+		display: flex;
+		justify-content: space-between;
+		padding:.5em 1em;
+		background-color: #9e9e9e;
+		transition: all .3s;
+		height:1.4em;
+	}
+	#game-info.my-turn {
+		background-color: #4caf50;
+		color:#fff;
+	}
+	#game-info.looser {
+		background-color: #d8000e;
+		color:#fff;
+	}
+	#board,
+	#game {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+	}
+	#board{
+		padding: 20px;
+	}
+	section {
+		flex-basis: 60%;
+	}
+	#game{
+		border:none;
+		position: relative;
+		overflow: visible;
+		border-radius: 100%;
+	}
+	#game::before{
+		padding-bottom: 100%;
+		content: '';
+		display: block;
+		z-index: 1;
+		position: relative;
+	}
+	#game::after {
+		content: '';
+		display: block;
+		position: absolute;
+		background-color: #f5f5f5;
+		width: 50%;
+		height:50%;
+		left:25%;
+		top:25%;
+		border-radius: 100%;
+		z-index:20;
+	}
+	#game .key {
+		z-index:3;
+		position: absolute;
+		top:0;
+		width:50%;
+		height:50%;
+		border:none;
+		background-color: #eee;
+		transition: all .2s;
+		outline: none;
 	}
 	#game .key.on {
+		box-shadow: none;
 		transform: scale(1.05);
+		z-index: 10;
 	}
 	#game .key[disabled] {
 		opacity: .1;
 	}
-	.green { background-color: #2E9B37; }
-	.green.on { background-color: #4AF706; }
-	.red { background-color: #8E000F; }
-	.red.on { background-color: #D8000E; }
-	.yellow { background-color: #EAA908; }
-	.yellow.on { background-color: #FFFF0B; }
-	.blue { background-color: #0C357D; }
-	.blue.on { background-color: #2FAFEE; }
+	#game button.red,
+	#game button.blue 		{ left:50%; }
+	#game button.blue,
+	#game button.yellow 	{ top:50%; }
+	#game button.green 		{ border-radius: 100% 0 0 0; margin: var(--distance) 0 0 var(--distance); }
+	#game button.red 		{ border-radius: 0 100% 0 0; margin: var(--distance) var(--distance) 0 0; }
+	#game button.yellow 	{ border-radius: 0 0 0 100%; margin:  0 0 var(--distance) var(--distance); }
+	#game button.blue 		{ border-radius: 0 0 100% 0; margin: 0 var(--distance) var(--distance) 0; }
+	#game button.green {
+		background-color: #2E9B37;
+		border: 2px solid #4AF706;
+		border-width:4px 0 0 4px;
+	}
+	#game button.green.on { background-color: #4AF706; }
+	#game button.red {
+		background-color: #8E000F;
+		border: 2px solid #D8000E;
+		border-width:4px 4px 0 0;
+	}
+	#game button.red.on { background-color: #D8000E; }
+	#game button.yellow {
+		background-color: #EAA908;
+		border: 2px solid #FFFF0B;
+		border-width:0 0 4px 4px;
+	}
+	#game button.yellow.on { background-color: #FFFF0B; }
+	#game button.blue {
+		background-color: #0C357D;
+		border: 2px solid #2FAFEE;
+		border-width:0 4px 4px 0;
+	}
+	#game button.blue.on { background-color: #2FAFEE; }
 	.hide { display: none; }
 
-sidebar{
-	flex-basis: calc( 40% - 10px );
-	border:1px solid #ddd;
-	background-color: #f5f5f5;
-}
+/* ==========================================================================
+SIDEBAR
+========================================================================== */
+	sidebar{
+		flex-basis: calc( 40% - 10px );
+		border:1px solid #ddd;
+		background-color: #f5f5f5;
+	}
 	#players ul{
 		list-style: none;
 		margin:0;
@@ -87,14 +183,14 @@ sidebar{
 		position: relative;
 	}
 	#players ul li.active {
-		background-color: #fff732;
+		background-color: #ddd;
 	}
 	#players ul li.winner {
 		background-color: #4caf50;
 		color:#fff;
 	}
 	#players ul li.looser {
-		background-color: #f44336;
+		background-color: #d8000e;
 		color:#fff;
 	}
 	#players ul li .score{
@@ -113,20 +209,26 @@ sidebar{
 		margin:5px;
 	}
 
-#controls {
-	padding: 1em;
-}
+	#controls {
+		padding: 1em;
+	}
 
-#overlay {
-	background-color: transparent;
-	bottom:0;
-	display: none;
-	left:0;
-	position: fixed;
-	right:0;
-	top:0;
-	z-index: 1;
-}
+/* ==========================================================================
+OVERLAY
+========================================================================== */
+	#overlay {
+		background-color: transparent;
+		bottom:0;
+		display: none;
+		left:0;
+		position: fixed;
+		right:0;
+		top:0;
+		z-index: 1;
+	}
+	.off #game-info{
+		visibility: hidden;
+	}
 	.off #board{
 		filter: blur(6px);
 	}
@@ -142,3 +244,18 @@ sidebar{
 		display: block;
 	}
 
+@media (max-width: 600px){
+	sidebar,section {
+		flex-basis: 100%;
+	}
+	section {
+		height: 50vw;
+		margin-bottom: 20px;
+	}
+	#game {
+		width:55%;
+		left:50%;
+		top:50%;
+		transform: translate(-50%,-50%);
+	}
+}
