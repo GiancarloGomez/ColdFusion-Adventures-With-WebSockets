@@ -23,9 +23,10 @@ var Game = {
         const _this = this;
 
         // map key click
-        _this.keys.forEach(element => element.addEventListener('click',
-            evt => _this.positionClicked(evt.target.dataset.index)
-        ));
+        _this.keys.forEach(element => {
+            element.addEventListener('click', evt => _this.positionClicked(evt.target.dataset.index));
+            element.addEventListener('transitionend', _this.removeTransition);
+        });
 
         // subscribe form
         _this.frm.addEventListener('submit',function(evt){
@@ -59,7 +60,7 @@ var Game = {
         // add scrore to winning player
         winner.score++;
 
-        // show looser
+        // show status on player list
         _this.plyrs.querySelectorAll('li').forEach(li => {
             li.classList.remove('active');
             if(li.id === 'c-' + winner.clientid){
@@ -70,6 +71,7 @@ var Game = {
             }
         });
 
+        // run sounds and update top bar
         if (winner.clientid === _this.me){
             _this.gameInfoBar.classList.add('winner');
             _this.turnLabel.innerHTML = 'YOU WON!!!';
@@ -99,7 +101,7 @@ var Game = {
         _this.playerSetActive();
         _this.disableGameKeys(false);
         _this.gameInfoBar.classList.remove('looser','winner');
-        _this.notifyTurn(true,position);
+        _this.notifyTurn(position,true);
     },
 
     gameStart : function(data){
@@ -120,13 +122,14 @@ var Game = {
         // set active player
         _this.playerSetActive();
         // notifiy player their turn
-        _this.notifyTurn(true,data.first);
+        _this.notifyTurn(data.first,true);
     },
 
-    notifyTurn : function(firstHit = false, position){
+    notifyTurn : function(position, firstHit = false){
         let _this       = this,
             isMe        = _this.players[_this.activePlayer].clientid === _this.me,
             username    = _this.players[_this.activePlayer].subscriberinfo.username;
+
         if ( isMe === true ){
             _this.turnLabel.innerHTML = `It is your turn ${username}!`;
             _this.gameInfoBar.classList.add('my-turn');
@@ -134,17 +137,12 @@ var Game = {
             _this.turnLabel.innerHTML = `It is ${username}'s turn`;
             _this.gameInfoBar.classList.remove('my-turn');
         }
+
         if (firstHit === true){
             // settimeout so first click happens after enable
             window.setTimeout(function(pos){
                 _this.keys[pos].click()
             },1000,position);
-        }
-        else {
-            // stop animation
-            window.setTimeout(function(pos){
-                _this.keys[pos].classList.remove('on');
-            },100,position);
         }
     },
 
@@ -187,7 +185,7 @@ var Game = {
     },
 
     positionClicked : function(position){
-        let _this = this;
+        let _this       = this;
 
         if (_this.me === _this.players[_this.activePlayer].clientid){
             // add current pick for active player
@@ -202,7 +200,7 @@ var Game = {
                     return;
                 }
             }
-            // add initial or new pick
+            // add initial or last pick
             else if (_this.game.length === 0 || _this.curPick.length > _this.game.length){
 
                 // change players
@@ -227,7 +225,7 @@ var Game = {
         // add animation
         _this.keys[position].classList.add('on');
         // notify turn
-        _this.notifyTurn(false,position);
+        _this.notifyTurn(position,false);
         // play audio
         _this.audio[position].currentTime = 0;
         _this.audio[position].play();
@@ -282,6 +280,11 @@ var Game = {
                 break;
             }
         }
+    },
+
+    removeTransition : function(e) {
+        if (e.propertyName !== 'transform' && !this.classList.contains('on')) return;
+            this.classList.remove('on');
     },
 
     subscribe : function(username){

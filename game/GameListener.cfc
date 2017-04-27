@@ -1,7 +1,5 @@
-/**
-* @extends CFIDE.websocket.ChannelListener
-*/
-component {
+component extends="CFIDE.websocket.ChannelListener" {
+
 	public boolean function allowSubscribe(struct subscriberInfo) {
 		// make sure there is not more than 2
 		var subs = WSGetSubscribers(arguments.subscriberInfo.channelname);
@@ -9,7 +7,8 @@ component {
 		if (subs.len() >= 2)
 			return false;
 		// if we have 2 subscribers to this channel let's send the startGame call
-		thread name="subscribers_#createUUID()#" action="run" channel = arguments.subscriberInfo.channelname{
+		thread name="subscribers_#createUUID()#" action="run" channel = arguments.subscriberInfo.channelname  {
+			sleep(150);
 			startGame(attributes.channel);
 		}
 		return true;

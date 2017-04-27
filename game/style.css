@@ -65,7 +65,8 @@ GAME
 		transition: all .3s;
 		height:1.4em;
 	}
-	#game-info.my-turn {
+	#game-info.my-turn,
+	#game-info.winner {
 		background-color: #4caf50;
 		color:#fff;
 	}
@@ -90,13 +91,7 @@ GAME
 		position: relative;
 		overflow: visible;
 		border-radius: 100%;
-	}
-	#game::before{
 		padding-bottom: 100%;
-		content: '';
-		display: block;
-		z-index: 1;
-		position: relative;
 	}
 	#game::after {
 		content: '';
@@ -118,7 +113,7 @@ GAME
 		height:50%;
 		border:none;
 		background-color: #eee;
-		transition: all .2s;
+		transition: all ease-in-out .15s;
 		outline: none;
 	}
 	#game .key.on {
@@ -167,7 +162,7 @@ GAME
 SIDEBAR
 ========================================================================== */
 	sidebar{
-		flex-basis: calc( 40% - 10px );
+		flex-basis: calc( 40% - 20px );
 		border:1px solid #ddd;
 		background-color: #f5f5f5;
 	}
@@ -254,6 +249,7 @@ OVERLAY
 	}
 	#game {
 		width:55%;
+		padding-bottom: 55%;
 		left:50%;
 		top:50%;
 		transform: translate(-50%,-50%);

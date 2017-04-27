@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<link rel="icon" href="/favicon.ico?v=2">
+	<link rel="icon" href="favicon.ico">
 	<title>GAME</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700">
@@ -56,7 +56,6 @@
 	 <script src="game.js"></script>
 
 	<cfwebsocket 	name 		="ws"
-					secure 		="#cgi.server_port_secure#"
 					onMessage 	="Game.receiveData" />
 </body>
 </html>
