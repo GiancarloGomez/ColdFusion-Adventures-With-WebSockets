@@ -8,6 +8,7 @@ This is a game that was inspired by Mark Mandel's presentation on Scalable Realt
 
 ## Conferences
 * Into The Box 2016
+* Adobe ColdFusion Summit 2017
 
 ## Other Repos
 * [Advanced Socket](https://github.com/GiancarloGomez/AdvancedSocket)
