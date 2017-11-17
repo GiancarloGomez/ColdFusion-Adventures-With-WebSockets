@@ -34,9 +34,9 @@
 	<div id="overlay">
 		<form id="subscribeForm" name="subscribeForm">
 			<label for="_username">Username</label>
-			<input type="text" name="username" id="_username" value="" placeholder="Enter username to subscribe" autocomplete="off" required>
+			<input type="text" name="username" id="_username" value="" placeholder="Enter username to subscribe" autocomplete="off" autocorrect="off" required>
 			<label for="_channel">Channel</label>
-			<input type="text" name="channel" id="_channel" value="" placeholder="Enter a channel name to create or join here" pattern="[a-z0-9_\-]*" autocomplete="off" required>
+			<input type="text" name="channel" id="_channel" value="" placeholder="Enter a channel name to create or join here" pattern="[a-z0-9_\-]*" autocomplete="off" autocorrect="off" autocapitalize="none" required>
 			<span class="help">Channels names are lowercases alphanumeric values with dashes and underscores are allowed. (ie: best-game-01)</span>
 			<button type="submit" class="" id="subscribe">SUBSCRIBE</button>
 		</form>

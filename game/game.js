@@ -246,7 +246,7 @@ var Game = {
         else if(message.msg && message.msg.indexOf('Access denied') !== -1){
             _this.subscribeBtn.disabled     = false;
             _this.subscribeBtn.innerHTML    = 'SUBMIT';
-            window.alert(`The channel ${_this.frm.channel.value.trim()} full at the moment, please try again later or create another channel.`);
+            window.alert(`The channel ${_this.frm.channel.value.trim()} is full at the moment, please try again later or create another channel.`);
         }
         // handle all possible messages
         else if (message.data) {
