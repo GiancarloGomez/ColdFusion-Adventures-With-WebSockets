@@ -3,6 +3,7 @@ component {
     this.name              = "GameDemo";
     this.sessionmanagement = true;
     this.sessiontimeout    = createTimeSpan(1,0,0,0);
+    this.serialization.preservecaseforstructkey = true;
 
     // websockets
     this.wschannels = [

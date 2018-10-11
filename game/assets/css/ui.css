@@ -2,7 +2,7 @@
 	--distance:-4px;
 }
 body,button,input[type="text"] {
-	font:normal 14px/1.4 Lato,"Helvetica Neue",Helvetica,Arial,sans-serif;
+	font:normal 14px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";;
 }
 body {
 	padding: 0;
@@ -16,6 +16,81 @@ button {
 	background-color: #eee;
 }
 
+/* ==========================================================================
+WELCOME SCREEN
+========================================================================== */
+	#welcome {
+		display: flex;
+		flex-direction: column;
+		height: 100vh;
+		width: 100vw;
+		align-items: center;
+		justify-content: center;
+		color:#444;
+	}
+	#welcome section {
+		box-sizing: border-box;
+		border-radius: .5em;
+		padding: 1.5em;
+		flex-basis: auto;
+		height: auto;
+		text-align: center;
+		margin: 0 20px;
+		max-width: 640px;
+		background-color: #fff;
+		box-shadow: 0 0 10px rgba(0,0,0,.3);
+	}
+	#welcome h1 {
+		margin: 0;
+	}
+	#welcome p{
+		margin: 1em 0 0;
+	}
+	#welcome a {
+		color: inherit;
+		font-weight: 500;
+		text-decoration: none;
+		transition: color .3s;
+	}
+	#welcome a:hover{
+		color: firebrick;
+	}
+	#welcome small {
+		color:#777;
+	}
+	#welcome small span {
+		font-family: 'OperatorMonoSSm-Light',Menlo,Consolas, monospace;
+	}
+	#sig {
+		text-align: center;
+	}
+	#sig i {
+		font-size: 1.2em;
+		line-height: 2;
+	}
+
+/* ==========================================================================
+SUBSCRIPTIONS
+========================================================================== */
+	#subscriptions {
+		padding:20px;
+	}
+	#subscriptions table[class^=cfdump]{
+		font-family: 'OperatorMonoSSm-Book',Menlo,Consolas, monospace;
+	}
+	#subscriptions section {
+		box-sizing: border-box;
+		border-radius: .5em;
+		padding: 1.5em;
+		flex-basis: auto;
+		min-height: calc(100vh - 40px);
+		margin: 0;
+		background-color: #fff;
+		box-shadow: 0 0 10px rgba(0,0,0,.3);
+	}
+	#subscriptions section h1 {
+		margin-top: 0;
+	}
 /* ==========================================================================
 FORM
 ========================================================================== */
@@ -60,10 +135,13 @@ GAME
 	#game-info {
 		display: flex;
 		justify-content: space-between;
-		padding:.5em 1em;
+		padding:0 1em;
 		background-color: #9e9e9e;
 		transition: all .3s;
-		height:1.4em;
+		height: 2.8em;
+		align-items: center;
+		font-size: 1.4em;
+		font-weight: 500;
 	}
 	#game-info.my-turn,
 	#game-info.winner {
@@ -82,6 +160,8 @@ GAME
 	}
 	#board{
 		padding: 20px;
+		max-width: 620px;
+		margin:20px auto 0;
 	}
 	section {
 		flex-basis: 60%;
@@ -239,7 +319,7 @@ OVERLAY
 		display: block;
 	}
 
-@media (max-width: 600px){
+@media (max-width: 659px){
 	sidebar,section {
 		flex-basis: 100%;
 	}

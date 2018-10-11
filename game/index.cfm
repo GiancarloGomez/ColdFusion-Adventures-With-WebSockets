@@ -2,60 +2,52 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<link rel="icon" href="favicon.ico">
-	<title>GAME</title>
+	<link rel="icon" href="/favicon.ico">
+	<title>THE GAME DEMO</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700">
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="/assets/css/ui.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 </head>
-<body class="off">
-
-	<div id="game-info">
-		<span class="channel_label"></span>
-		<span id="turn"></span>
-	</div>
-	<div id="board">
-		<section>
-			<div id="game">
-				<button type="button" class="key green" data-index="0" disabled></button>
-				<button type="button" class="key red" data-index="1" disabled></button>
-				<button type="button" class="key yellow" data-index="2" disabled></button>
-				<button type="button" class="key blue" data-index="3" disabled></button>
-			</div>
-		</section>
-		<sidebar>
-			<div id="players"></div>
-			<div id="controls">
-				<button type="button" class="hide" id="restart">RESTART</button>
-			</div>
-		</sidebar>
-	</div>
-
-	<div id="overlay">
-		<form id="subscribeForm" name="subscribeForm">
-			<label for="_username">Username</label>
-			<input type="text" name="username" id="_username" value="" placeholder="Enter username to subscribe" autocomplete="off" autocorrect="off" required>
-			<label for="_channel">Channel</label>
-			<input type="text" name="channel" id="_channel" value="" placeholder="Enter a channel name to create or join here" pattern="[a-z0-9_\-]*" autocomplete="off" autocorrect="off" autocapitalize="none" required>
-			<span class="help">Channels names are lowercases alphanumeric values with dashes and underscores are allowed. (ie: best-game-01)</span>
-			<button type="submit" class="" id="subscribe">SUBSCRIBE</button>
-		</form>
-		<div id="waiting" class="hide">
-			Waiting for user to join game ...
-			<br />channel : <span class="channel_label"></span>
-		</div>
-	</div>
-
-	<audio src="sounds/1.mp3"></audio>
-	<audio src="sounds/2.mp3"></audio>
-	<audio src="sounds/3.mp3"></audio>
-	<audio src="sounds/4.mp3"></audio>
-	<audio src="sounds/5.mp3"></audio>
-	<audio src="sounds/6.mp3"></audio>
-
-	 <script src="game.js"></script>
-
-	<cfwebsocket 	name 		="ws"
-					onMessage 	="Game.receiveData" />
+<body id="welcome">
+	<section>
+		<h1>ColdFusion Adventures With WebSockets</h1>
+		<p>
+			Welcome to the 2 Player Simon Game Example
+		</p>
+		<p>
+			What will you like to do?
+		</p>
+		<p>
+			<a href="./play/" target="_blank">Play a Game</a> &bull;
+			<a href="./subscriptions/" target="_blank">View Subscribers</a> &bull;
+			<a href="./console/" target="_blank">Open Console</a>
+		</p>
+		<p>
+			<small>
+				Console requires having the console code at the root of this site either
+				by a virtual folder mapping or physical code in disk.
+				<br /><br />If you use a commandbox
+				alias make sure to change the following setting in the ColdFusion Administrator.
+				<br /><span><strong>Application.cfc/Application.cfm lookup order<br />In webroot</strong></span>
+				<br /><br />
+				When you want to monitor a game using the console app, make sure to subscribe to the name of the game using
+				dot notation as follows and leave the username blank.
+				<br /><span><strong>game.{{name_of_game}}</strong></span>
+			</small>
+		</p>
+	</section>
+	<p id="sig">
+		Giancarlo Gomez<br />
+		<a href="https://fusedevelopments.com" target="_blank">Fuse Developments</a> &bull;
+		<a href="https://crosstrackr.com" target="_blank">CrossTrackr</a>
+		<br />
+		<a href="https://github.com/GiancarloGomez" target="_blank"><i class="fab fa-github"></i></a> &nbsp;
+		<a href="https://twitter.com/GiancarloGomez" target="_blank"><i class="fab fa-twitter"></i></a> &nbsp;
+		<a href="https://www.instagram.com/GiancarloGomez" target="_blank"><i class="fab fa-instagram"></i></a> &nbsp;
+		<a href="https://www.facebook.com/giancarlo.gomez" target="_blank"><i class="fab fa-facebook"></i></a> &nbsp;
+		<a href="https://www.linkedin.com/in/giancarlogomez" target="_blank"><i class="fab fa-linkedin-in"></i></a> &nbsp;
+		<a href="https://www.giancarlogomez.com" target="_blank"><i class="fas fa-rss"></i></a> &nbsp;
+		<a href="mailto:giancarlo.gomez@gmail.com"><i class="far fa-envelope"></i></a>
+	</p>
 </body>
 </html>
