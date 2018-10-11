@@ -26,8 +26,8 @@
 			<small>
 				Console requires having the console code at the root of this site either
 				by a virtual folder mapping or physical code in disk.
-				<br /><br />If you use a commandbox
-				alias make sure to change the following setting in the ColdFusion Administrator.
+				<br /><br />
+				If you use an alias make sure to change the following setting in the ColdFusion Administrator.
 				<br /><span><strong>Application.cfc/Application.cfm lookup order<br />In webroot</strong></span>
 				<br /><br />
 				When you want to monitor a game using the console app, make sure to subscribe to the name of the game using

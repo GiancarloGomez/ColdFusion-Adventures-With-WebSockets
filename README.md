@@ -8,9 +8,9 @@ This is a game that was inspired by Mark Mandel's presentation on Scalable Realt
 
 ## Run using CommandBox
 You can easily run the game using CommandBox. Simply clone this repo to your local machine
-and go into the ``game`` folder in your Terminal or Command Prompt and run ``box start``.
+and go into the ``game`` folder in your Terminal or Command Prompt and execute the ``box start`` command.
 
-To use the console to debug the game, make sure to clone the _WebSockets Console App_ and
+To use the console to debug the game, make sure to clone the [__WebSockets Console App__](https://github.com/GiancarloGomez/ColdFusion-WebSockets-Console) and
 create an alias to the directory or drop inside the ``game`` folder.
 
 You can create an alias by running the ``server set`` command.
